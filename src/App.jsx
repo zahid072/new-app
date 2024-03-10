@@ -1,29 +1,27 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-
+import { useEffect, useState } from 'react'
 import './App.css'
+import Country from './components/Country';
 
 function App() {
-  const [count, setCount] = useState(0);
+ const [countries, setCountries] = useState([]);
 
-  function clickHandler(){
-    if(count >= 0){
-      setCount(count + 1);
-    }
-  }
-  function removeHandler(){
-    if(count > 0){
-      setCount(count - 1);
-    }
-  }
+useEffect(() => {
+  fetch('https://restcountries.com/v3.1/all')
+  .then(res => res.json())
+  .then(datas => {
+    console.log(datas)
+    setCountries(datas)
+  })
+}, []);
 
   return (
     <>
-     <h1>hello</h1>
-     <button onClick={clickHandler} className=' bg-emerald-500 px-6 py-3 rounded-xl'>click me</button>
-     <button onClick={removeHandler} className=' bg-emerald-500 px-6 py-3 rounded-xl'>remove</button>
-
-     <h3>count: {count}</h3>
+     <div className='flex gap-5 flex-wrap'>
+      
+     {
+      countries.map((country, index) => <Country key={index} country={country}/>)
+     }
+     </div>
     </>
   )
 }
